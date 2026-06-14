@@ -11,7 +11,7 @@ body {
 #game-background {
     position: fixed;
     top: 0; left: 0; width: 100%; height: 100%;
-    background-image: url('bg_base.jpg');
+    background-image: url('Images/bg_base.jpg');
     background-size: cover;
     background-position: center;
     filter: blur(2px) brightness(0.5); /* 少し暗く、ぼかしてキャラを引き立てる */
