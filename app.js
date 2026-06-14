@@ -90,3 +90,12 @@ function updateUI() {
 }
 
 window.onload = loadGame;
+
+function resetGame() {
+    if (confirm("データを完全にリセットしますか？この操作は取り消せません。")) {
+        localStorage.removeItem('myRpgSave');
+        localStorage.removeItem('lastLogin');
+        location.reload(); // ページをリロードして初期状態にする
+    }
+}
+
