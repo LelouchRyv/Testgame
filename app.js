@@ -5,18 +5,24 @@ const storyData = [
     { text: "第2章：裏切りの真相と、深まる謎。", req: 10 }
 ];
 
-// セーブ機能
-function saveGame() {
-    localStorage.setItem('myRpgSave', JSON.stringify(state));
+function saveGame() { localStorage.setItem('myRpgSave', JSON.stringify(state)); }
+
+function loadGame() {
+    const saved = localStorage.getItem('myRpgSave');
+    if (saved) state = JSON.parse(saved);
+    checkLoginBonus();
+    updateUI();
 }
 
-// ロード機能
-function loadGame() {
-    const savedData = localStorage.getItem('myRpgSave');
-    if (savedData) {
-        state = JSON.parse(savedData);
+function checkLoginBonus() {
+    const lastLogin = localStorage.getItem('lastLogin');
+    const today = new Date().toDateString();
+    if (lastLogin !== today) {
+        state.gems += 10;
+        state.money += 500;
+        localStorage.setItem('lastLogin', today);
+        alert("ログインボーナス！石10個と500ゴールド獲得！");
     }
-    updateUI();
 }
 
 function train() {
@@ -24,28 +30,30 @@ function train() {
         state.money -= 100;
         state.exp += 25;
         if (state.exp >= 100) { state.lv++; state.exp = 0; }
-        updateUI();
-        saveGame();
-    } else { alert("資金が足りません"); }
+        updateUI(); saveGame();
+    } else alert("資金不足です");
+}
+
+function explore() {
+    const gain = Math.floor(Math.random() * 200) + 100;
+    state.money += gain;
+    updateUI(); saveGame();
+    alert(gain + "ゴールド獲得！");
 }
 
 function evolve() {
     if (state.lv >= 5 && !state.isAwakened) {
         state.isAwakened = true;
-        updateUI();
-        saveGame();
-    } else { alert("進化にはLv.5以上が必要です"); }
+        updateUI(); saveGame();
+    } else alert("進化にはLv.5以上が必要です");
 }
 
 function nextStory() {
     if (state.currentChapter + 1 < storyData.length) {
         if (state.lv >= storyData[state.currentChapter + 1].req) {
             state.currentChapter++;
-            updateUI();
-            saveGame();
-        } else {
-            alert("続きを解放するにはLv." + storyData[state.currentChapter + 1].req + "が必要です。");
-        }
+            updateUI(); saveGame();
+        } else alert("続きにはLv." + storyData[state.currentChapter + 1].req + "が必要です");
     }
 }
 
@@ -55,17 +63,11 @@ function updateUI() {
     document.getElementById('char-lv').innerText = state.lv;
     document.getElementById('char-exp').innerText = state.exp;
     document.getElementById('story-text').innerText = storyData[state.currentChapter].text;
-    
-    // 立ち絵の切り替えロジック
-    const charImg = document.getElementById('char-image');
+    const img = document.getElementById('char-image');
     if (state.isAwakened) {
-        charImg.src = "https://via.placeholder.com/300x500/e74c3c/ffffff?text=Awakened";
+        img.src = "https://via.placeholder.com/300x500/e74c3c/ffffff?text=Awakened";
         document.getElementById('char-name').innerText = "真の騎士";
-    } else {
-        charImg.src = "https://via.placeholder.com/300x500/3498db/ffffff?text=Character";
-        document.getElementById('char-name').innerText = "見習い騎士";
     }
 }
 
-// ページ読み込み時に実行
-loadGame();
+window.onload = loadGame;
