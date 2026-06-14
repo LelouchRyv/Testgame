@@ -10,8 +10,8 @@ const storyData = [
 
 // ガチャで手に入るキャラと画像の対応（後で用意するファイル名）
 const gachaList = [
-    { name: "妖精の弓使い", img: "chara_elf.png" },
-    { name: "炎の魔術師", img: "chara_witch.png" }
+    { name: "妖精の弓使い", img: "Images/chara_elf.png" },
+    { name: "炎の魔術師", img: "Images/chara_witch.png" }
 ];
 
 // --- システム機能（セーブ、ロード、リセット） ---
@@ -112,7 +112,7 @@ function updateUI() {
 
     if (state.isAwakened) {
         // 覚醒時
-        imgEl.src = "chara_awakened.png";
+        imgEl.src = "Images/chara_awakened.png";
         nameEl.innerText = "真の騎士";
         imgEl.classList.add('awakened'); // 豪華な演出用クラス
     } else if (state.characters.length > 0) {
@@ -122,7 +122,7 @@ function updateUI() {
         nameEl.innerText = lastChar.name;
     } else {
         // 初期状態
-        imgEl.src = "chara_knight.png";
+        imgEl.src = "Images/chara_knight.png";
         nameEl.innerText = "見習い騎士";
     }
 }
