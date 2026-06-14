@@ -7,30 +7,37 @@
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
+    <div id="game-background"></div>
+
     <div id="game-container">
         <header id="status-bar">
             <span>石: <span id="gems">50</span></span>
             <span>金: <span id="money">1000</span></span>
         </header>
+        
         <div id="main-view">
-            <img id="char-image" src="https://via.placeholder.com/300x500/3498db/ffffff?text=Character" alt="キャラ">
+            <div id="char-stage">
+                <img id="char-image" src="chara_knight.png" alt="キャラ">
+            </div>
             <h2 id="char-name">見習い騎士</h2>
             <p>LV: <span id="char-lv">1</span> / EXP: <span id="char-exp">0</span></p>
         </div>
+        
         <div id="story-area">
             <p id="story-text">序章：見習い騎士の孤独な日々...</p>
             <button onclick="nextStory()">物語を進める</button>
         </div>
-        <div id="collection-area" style="background: #34495e; padding: 10px; margin: 10px; border-radius: 5px;">
+        
+        <div id="collection-area">
             <p id="char-list">所持キャラ: なし</p>
         </div>
-
+        
         <div id="controls">
             <button onclick="train()">強化合成</button>
             <button onclick="explore()">探索(金策)</button>
-            <button id="evolve-btn" onclick="evolve()">進化/覚醒</button>
             <button onclick="gacha()">ガチャ(石50)</button>
-            <button onclick="resetGame()" style="background: #e74c3c; grid-column: span 3;">データをリセット</button>
+            <button id="evolve-btn" onclick="evolve()">進化/覚醒</button>
+            <button onclick="resetGame()" class="btn-reset">リセット</button>
         </div>
     </div>
     <script src="app.js"></script>
