@@ -6,7 +6,6 @@ const storyData = [
 ];
 
 function saveGame() { localStorage.setItem('myRpgSave', JSON.stringify(state)); }
-
 function loadGame() {
     const saved = localStorage.getItem('myRpgSave');
     if (saved) state = JSON.parse(saved);
@@ -18,29 +17,26 @@ function checkLoginBonus() {
     const lastLogin = localStorage.getItem('lastLogin');
     const today = new Date().toDateString();
     if (lastLogin !== today) {
-        state.gems += 10;
-        state.money += 500;
+        state.gems += 10; state.money += 500;
         localStorage.setItem('lastLogin', today);
         alert("ログインボーナス！石10個と500ゴールド獲得！");
     }
 }
 
-// ガチャ機能の追加
 function gacha() {
     if (state.gems >= 50) {
         state.gems -= 50;
         const charNames = ["妖精の弓使い", "炎の魔術師", "鋼鉄の守護者", "闇の暗殺者"];
         const result = charNames[Math.floor(Math.random() * charNames.length)];
+        if (!state.characters.includes(result)) state.characters.push(result);
         alert("召喚結果：" + result + " を手に入れた！");
-        state.characters.push(result);
         updateUI(); saveGame();
     } else alert("石が足りません");
 }
 
 function train() {
     if (state.money >= 100) {
-        state.money -= 100;
-        state.exp += 25;
+        state.money -= 100; state.exp += 25;
         if (state.exp >= 100) { state.lv++; state.exp = 0; }
         updateUI(); saveGame();
     } else alert("資金不足です");
@@ -75,6 +71,8 @@ function updateUI() {
     document.getElementById('char-lv').innerText = state.lv;
     document.getElementById('char-exp').innerText = state.exp;
     document.getElementById('story-text').innerText = storyData[state.currentChapter].text;
+    document.getElementById('char-list').innerText = "所持キャラ: " + state.characters.join(", ");
+    
     const img = document.getElementById('char-image');
     if (state.isAwakened) {
         img.src = "https://via.placeholder.com/300x500/e74c3c/ffffff?text=Awakened";
