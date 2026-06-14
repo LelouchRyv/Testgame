@@ -28,8 +28,14 @@ function gacha() {
         state.gems -= 50;
         const charNames = ["妖精の弓使い", "炎の魔術師", "鋼鉄の守護者", "闇の暗殺者"];
         const result = charNames[Math.floor(Math.random() * charNames.length)];
-        if (!state.characters.includes(result)) state.characters.push(result);
-        alert("召喚結果：" + result + " を手に入れた！");
+        
+        // 重複チェック（既に持っていたらメッセージのみにする等の拡張が可能）
+        if (!state.characters.includes(result)) {
+            state.characters.push(result);
+            alert("召喚成功！新しいキャラ「" + result + "」を手に入れた！");
+        } else {
+            alert("召喚結果：「" + result + "」\n（既に所持しています）");
+        }
         updateUI(); saveGame();
     } else alert("石が足りません");
 }
@@ -71,7 +77,10 @@ function updateUI() {
     document.getElementById('char-lv').innerText = state.lv;
     document.getElementById('char-exp').innerText = state.exp;
     document.getElementById('story-text').innerText = storyData[state.currentChapter].text;
-    document.getElementById('char-list').innerText = "所持キャラ: " + state.characters.join(", ");
+    
+    // キャラクターリスト表示の修正
+    const charListEl = document.getElementById('char-list');
+    charListEl.innerText = state.characters.length > 0 ? "所持キャラ: " + state.characters.join(", ") : "所持キャラ: なし";
     
     const img = document.getElementById('char-image');
     if (state.isAwakened) {
