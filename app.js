@@ -1,4 +1,4 @@
-let state = { money: 1000, gems: 50, lv: 1, exp: 0, isAwakened: false, currentChapter: 0 };
+let state = { money: 1000, gems: 50, lv: 1, exp: 0, isAwakened: false, currentChapter: 0, characters: [] };
 const storyData = [
     { text: "序章：見習い騎士の孤独な日々...", req: 0 },
     { text: "第1章：予期せぬ襲撃、覚醒の時。", req: 5 },
@@ -23,6 +23,18 @@ function checkLoginBonus() {
         localStorage.setItem('lastLogin', today);
         alert("ログインボーナス！石10個と500ゴールド獲得！");
     }
+}
+
+// ガチャ機能の追加
+function gacha() {
+    if (state.gems >= 50) {
+        state.gems -= 50;
+        const charNames = ["妖精の弓使い", "炎の魔術師", "鋼鉄の守護者", "闇の暗殺者"];
+        const result = charNames[Math.floor(Math.random() * charNames.length)];
+        alert("召喚結果：" + result + " を手に入れた！");
+        state.characters.push(result);
+        updateUI(); saveGame();
+    } else alert("石が足りません");
 }
 
 function train() {
