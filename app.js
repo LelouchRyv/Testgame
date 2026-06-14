@@ -38,3 +38,31 @@ function updateUI() {
     document.getElementById('story-text').innerText = storyData[state.currentChapter].text;
 }
 
+// データを保存する関数
+function saveGame() {
+    localStorage.setItem('myRpgSave', JSON.stringify(state));
+}
+
+// データを読み込む関数
+function loadGame() {
+    const savedData = localStorage.getItem('myRpgSave');
+    if (savedData) {
+        state = JSON.parse(savedData);
+        updateUI();
+    }
+}
+
+// 既存の train や evolve 関数の最後に saveGame() を呼び出すように変更してください
+function train() {
+    if (state.money >= 100) {
+        state.money -= 100;
+        state.exp += 25;
+        if (state.exp >= 100) { state.lv++; state.exp = 0; }
+        updateUI();
+        saveGame(); // 追加
+    }
+}
+
+// ページ読み込み時にロードを実行
+window.onload = loadGame;
+
